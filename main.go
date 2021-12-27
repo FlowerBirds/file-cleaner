@@ -89,7 +89,7 @@ func main() {
 		os.Exit(2)
 	}
 	for _, f := range erorList {
-		log.Fatalf("delete file is not exist: %s\n", f)
+		log.Printf("delete file is not exist: %s\n", f)
 	}
 	for _, line := range existList {
 		deleteDirAndFile(line)
@@ -116,11 +116,11 @@ func PathExist(path string) (bool, bool) {
 }
 
 func readFile(file string) ([]string, []string, error)  {
-	var existList []string
-	var errorList []string
+	existList :=  []string{}
+	errorList := []string{}
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
-		log.Fatalf("read file: %v error: %v", file, err)
+		log.Printf("read file: %v error: %v\n", file, err)
 		return existList, errorList, err
 	}
 	s := string(b)
@@ -130,6 +130,7 @@ func readFile(file string) ([]string, []string, error)  {
 			continue
 		}
 		tmp := *cloudHome + lineStr
+
 		if e, _  := PathExist(tmp); e {
 			existList = append(existList, tmp)
 		} else {
@@ -142,7 +143,7 @@ func readFile(file string) ([]string, []string, error)  {
 func deleteDirAndFile(path string) {
 	fi, err := os.Stat(path)
 	if os.IsNotExist(err) {
-		log.Fatalf("read file: %v error: %v", path, err)
+		log.Printf("read file: %v error: %v\n", path, err)
 	}
 	if fi.IsDir() {
 		filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {

@@ -1,6 +1,6 @@
 .PHONY: build
 
-VERSION=0.0.3
+VERSION=0.0.5
 BANIRY=file-cleaner.exe
 
 build:
