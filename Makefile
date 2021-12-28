@@ -3,6 +3,8 @@
 VERSION=0.0.5
 BANIRY=file-cleaner
 
+GO111MODULE=on
+
 buildcmd = GOOS=$(1) GOARCH=$(2) go build -ldflags "-X 'main.Version=${VERSION}'" -o build/$(BANIRY)$(3)
 tar = cd build && tar -cvzf ${BANIRY}-$(1)_$(2)-${VERSION}.tar.gz $(BANIRY)$(3) && rm $(BANIRY)$(3)
 
