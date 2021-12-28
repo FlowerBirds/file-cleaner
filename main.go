@@ -1,6 +1,7 @@
 package main
 
 import (
+	"file-cleaner/types"
 	"flag"
 	"fmt"
 	"io/fs"
@@ -16,9 +17,9 @@ import (
 const DELETE_CONF = "delete.conf"
 
 var (
-	cloudHome = flag.String("c", "", "")
+	cloudHome  = flag.String("c", "", "")
 	deleteConf = flag.String("d", DELETE_CONF, "")
-	help = flag.Bool("h", false, "")
+	help       = flag.Bool("h", false, "")
 )
 
 var Version = "0.0.0"
@@ -36,6 +37,7 @@ Options:
 	-d set the delete conf file name at CLOUD_HOME dir, default is delete.conf.
 	-h help info.
 `
+
 func main() {
 	flag.Usage = func() {
 		tmpl := template.Must(template.New("example").Parse(usage))
@@ -44,8 +46,9 @@ func main() {
 		// fmt.Fprint(os.Stderr, fmt.Sprintf(usage, runtime.NumCPU()))
 	}
 	flag.Parse()
+	readConfig := types.ReadConfig{}
 	if *cloudHome == "" {
-		*cloudHome = os.Getenv("CLOUD_HOME")
+		*cloudHome = readConfig.Getenv("CLOUD_HOME")
 	}
 
 	if flag.NArg() < 1 && *cloudHome == "" {
@@ -115,8 +118,8 @@ func PathExist(path string) (bool, bool) {
 	return true, fi.IsDir()
 }
 
-func readFile(file string) ([]string, []string, error)  {
-	existList :=  []string{}
+func readFile(file string) ([]string, []string, error) {
+	existList := []string{}
 	errorList := []string{}
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -131,7 +134,7 @@ func readFile(file string) ([]string, []string, error)  {
 		}
 		tmp := *cloudHome + lineStr
 
-		if e, _  := PathExist(tmp); e {
+		if e, _ := PathExist(tmp); e {
 			existList = append(existList, tmp)
 		} else {
 			errorList = append(errorList, tmp)
