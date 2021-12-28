@@ -52,3 +52,6 @@ build:
 	@echo buil success
 	@${BANIRY}
 ```
+
+## 编译所有架构
+参考文章：[Go 使用Makefile编译所有架构](https://www.nhooo.com/note/qa5geu.html)
