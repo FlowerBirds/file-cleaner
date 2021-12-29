@@ -1,6 +1,6 @@
 .PHONY: build
 
-VERSION=0.0.6
+VERSION=0.0.7
 BANIRY=file-cleaner
 
 GO111MODULE=on
@@ -26,4 +26,7 @@ build/windows_amd64:
 
 test/windows:
 	$(call test,windows,amd64,.exe)
+
+clean:
+	cd build && rm -rf *
 
