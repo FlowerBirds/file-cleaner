@@ -81,6 +81,9 @@ func main() {
 		*cloudHome = *cloudHome + "\\"
 	}
 	log.Println("CLOUD_HOME is " + *cloudHome)
+	readConfig.Init(*cloudHome)
+	log.Println("current log dir: " + readConfig.LogDir)
+	log.Printf("begin to delete file in delete.conf.")
 	deleteListFile := *cloudHome + *deleteConf
 	_, err = os.Stat(deleteListFile)
 	if os.IsNotExist(err) {
@@ -94,10 +97,17 @@ func main() {
 	for _, f := range erorList {
 		log.Printf("delete file is not exist: %s\n", f)
 	}
+	var sum uint32
 	for _, line := range existList {
 		deleteDirAndFile(line)
+		if exist, _ := PathExist(line); exist {
+			log.Println("ERROR: file cannot be delete: " + line)
+			sum = sum + 1
+		}
 	}
-
+	if sum > 0 {
+		log.Printf("ERROR: %d files cannot be deleted, please check and delete again\n", sum)
+	}
 }
 
 func usageAndExit(msg string) {
